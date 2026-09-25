@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { DEVICE_META, typeColor } from "@/lib/deviceIcons";
+import { useTheme } from "@/theme/ThemeProvider";
 import {
   Server, Router, Network, Cloud, Database, ShieldAlert, Wifi, Phone, Monitor, HardDrive, Boxes,
 } from "lucide-react";
@@ -38,6 +39,7 @@ export default function TopologyCanvas({
 }) {
   const containerRef = useRef(null);
   const svgRef = useRef(null);
+  const { theme } = useTheme();
   const [size, setSize] = useState({ w: 800, h: 600 });
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [drag, setDrag] = useState(null); // { kind: 'pan'|'node', ... }
@@ -167,9 +169,9 @@ export default function TopologyCanvas({
     const s1 = statusMap[s.id]?.status;
     const s2 = statusMap[t.id]?.status;
     // if either endpoint is down => red, warn => amber, else sky
-    let color = "#38bdf8";
-    if (s1 === "down" || s2 === "down") color = "#f43f5e";
-    else if (s1 === "warn" || s2 === "warn") color = "#fbbf24";
+    let color = theme === "light" ? "#0369a1" : "#38bdf8";
+    if (s1 === "down" || s2 === "down") color = theme === "light" ? "#be123c" : "#f43f5e";
+    else if (s1 === "warn" || s2 === "warn") color = theme === "light" ? "#b45309" : "#fbbf24";
     const midX = (sx + tx) / 2;
     const midY = (sy + ty) / 2;
     const highlighted = selectedId && (selectedId === s.id || selectedId === t.id);
@@ -211,7 +213,7 @@ export default function TopologyCanvas({
               const cx = n.x + (n.w || 40) / 2;
               const cy = n.y + (n.h || 40) / 2;
               const st = statusMap[n.id]?.status;
-              const color = typeColor(n.type);
+              const color = typeColor(n.type, theme);
               const stColor = statusColor(st);
               const isSel = selectedId === n.id;
               const isHov = hoveredId === n.id;
@@ -229,11 +231,11 @@ export default function TopologyCanvas({
                   onClick={(e) => { e.stopPropagation(); onNodeClick && onNodeClick(n); }}
                 >
                   {/* halo */}
-                  <circle className="node-halo" r={r + 8} fill={color} opacity={isSel || isHov ? 0.22 : 0.0}
+                  <circle className="node-halo" r={r + 8} fill={color} opacity={isSel || isHov ? (theme === "light" ? 0.18 : 0.22) : 0.0}
                           style={{ transition: "opacity 150ms" }} />
                   {/* body */}
-                  <circle r={r} fill="hsl(var(--nm-panel-bg))" stroke={color} strokeWidth={isSel ? 2.4 : 1.5} />
-                  <circle r={r - 3} fill={`${color}18`} />
+                  <circle r={r} fill={theme === "light" ? "#ffffff" : "hsl(var(--nm-panel-bg))"} stroke={color} strokeWidth={isSel ? 2.4 : 1.5} />
+                  <circle r={r - 3} fill={`${color}${theme === "light" ? "14" : "18"}`} />
                   {/* status ring */}
                   <circle r={r + 3} fill="none" stroke={stColor} strokeWidth={2}
                           strokeDasharray={st === "up" ? "0" : st === "warn" ? "6 4" : st === "down" ? "3 3" : "2 6"}

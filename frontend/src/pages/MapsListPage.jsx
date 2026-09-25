@@ -20,6 +20,7 @@ import { toast } from "@/hooks/use-toast";
 import { listMaps, createMap, deleteMap } from "@/lib/api";
 import { DeviceIcon, typeColor } from "@/lib/deviceIcons";
 import { useAuth } from "@/auth/AuthProvider";
+import { useTheme } from "@/theme/ThemeProvider";
 import ThemeToggle from "@/components/ThemeToggle";
 import UploadDrawioDialog from "@/components/UploadDrawioDialog";
 
@@ -34,6 +35,7 @@ function StatusChip({ up = 0, warn = 0, down = 0 }) {
 }
 
 function MiniPreview({ nodes = [], edges = [] }) {
+  const { theme } = useTheme();
   const box = { minX: 0, minY: 0, maxX: 1400, maxY: 900 };
   if (nodes.length) {
     box.minX = Math.min(...nodes.map((n) => n.x));
@@ -58,12 +60,12 @@ function MiniPreview({ nodes = [], edges = [] }) {
         return (
           <line key={e.id} x1={s.x + (s.w || 40) / 2} y1={s.y + (s.h || 40) / 2}
                 x2={t.x + (t.w || 40) / 2} y2={t.y + (t.h || 40) / 2}
-                stroke="hsl(var(--primary) / 0.55)" strokeWidth="2" />
+                stroke={theme === "light" ? "hsl(var(--primary) / 0.4)" : "hsl(var(--primary) / 0.55)"} strokeWidth="2" />
         );
       })}
       {nodes.map((n) => (
         <circle key={n.id} cx={n.x + (n.w || 40) / 2} cy={n.y + (n.h || 40) / 2}
-                r={6} fill={typeColor(n.type)} opacity={0.9} />
+                r={6} fill={typeColor(n.type, theme)} opacity={0.95} />
       ))}
     </svg>
   );
