@@ -180,8 +180,8 @@ export default function TopologyCanvas({
               className="edge-flow" opacity={0.9} />
         {e.label ? (
           <g transform={`translate(${midX}, ${midY})`}>
-            <rect x="-18" y="-8" width="36" height="16" rx="3" fill="#0a1017" stroke="rgba(56,189,248,0.25)" />
-            <text textAnchor="middle" dy="3.5" className="mono" fontSize="9" fill="#94a3b8">{e.label.slice(0, 8)}</text>
+            <rect x="-18" y="-8" width="36" height="16" rx="3" fill="hsl(var(--nm-panel-bg))" stroke="hsl(var(--primary) / 0.35)" />
+            <text textAnchor="middle" dy="3.5" className="mono" fontSize="9" fill="hsl(var(--nm-text-muted))">{e.label.slice(0, 8)}</text>
           </g>
         ) : null}
       </g>
@@ -232,7 +232,7 @@ export default function TopologyCanvas({
                   <circle className="node-halo" r={r + 8} fill={color} opacity={isSel || isHov ? 0.22 : 0.0}
                           style={{ transition: "opacity 150ms" }} />
                   {/* body */}
-                  <circle r={r} fill="#0b1220" stroke={color} strokeWidth={isSel ? 2.4 : 1.5} />
+                  <circle r={r} fill="hsl(var(--nm-panel-bg))" stroke={color} strokeWidth={isSel ? 2.4 : 1.5} />
                   <circle r={r - 3} fill={`${color}18`} />
                   {/* status ring */}
                   <circle r={r + 3} fill="none" stroke={stColor} strokeWidth={2}
@@ -247,26 +247,26 @@ export default function TopologyCanvas({
                   {/* label below */}
                   {(n.label || n.ip) && (
                     <g transform="translate(0, 32)">
-                      <text textAnchor="middle" fontSize="10" fill="#cbd5e1" className="mono" style={{ paintOrder: "stroke", stroke: "#05070a", strokeWidth: 3 }}>
+                      <text textAnchor="middle" fontSize="10" fill="hsl(var(--nm-text-strong))" className="mono" style={{ paintOrder: "stroke", stroke: "hsl(var(--nm-app-bg))", strokeWidth: 3 }}>
                         {(n.label || n.ip || "").slice(0, 24)}
                       </text>
                       {n.ip && n.label && (
-                        <text y={11} textAnchor="middle" fontSize="8.5" fill="#64748b" className="mono" style={{ paintOrder: "stroke", stroke: "#05070a", strokeWidth: 3 }}>
+                        <text y={11} textAnchor="middle" fontSize="8.5" fill="hsl(var(--nm-text-muted))" className="mono" style={{ paintOrder: "stroke", stroke: "hsl(var(--nm-app-bg))", strokeWidth: 3 }}>
                           {n.ip}
                         </text>
                       )}
                     </g>
                   )}
-                  {/* status dot */}
-                  <circle cx={r - 4} cy={-r + 4} r={4} fill={stColor} stroke="#05070a" strokeWidth={1.5} />
                   {/* selection ants */}
                   {isSel && (
-                    <circle r={r + 6} fill="none" stroke="#38bdf8" strokeWidth={1} strokeDasharray="4 4" className="selected-ants" opacity={0.8} />
+                    <circle r={r + 6} fill="none" stroke="hsl(var(--primary))" strokeWidth={1} strokeDasharray="4 4" className="selected-ants" opacity={0.85} />
                   )}
                   {/* linking source ring */}
                   {isLinkSrc && (
-                    <circle r={r + 10} fill="none" stroke="#facc15" strokeWidth={1.5} strokeDasharray="2 3" className="selected-ants" />
+                    <circle r={r + 10} fill="none" stroke="#eab308" strokeWidth={1.5} strokeDasharray="2 3" className="selected-ants" />
                   )}
+                  {/* status dot */}
+                  <circle cx={r - 4} cy={-r + 4} r={4} fill={stColor} stroke="hsl(var(--nm-app-bg))" strokeWidth={1.5} />
                 </g>
               );
             })}

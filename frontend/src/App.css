@@ -1,38 +1,37 @@
-/* NetMap - Dude-style dark UI */
+/* NetMap - Themed shared styles */
 
 .App {
   min-height: 100vh;
-  background: #05070a;
-  color: #d7e2ec;
+  background: hsl(var(--nm-app-bg));
+  color: hsl(var(--nm-text-strong));
   font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-/* Grid background used on canvas */
+/* Grid background used on the canvas */
 .grid-bg {
-  background-color: #05070a;
+  background-color: hsl(var(--nm-canvas-bg));
   background-image:
-    linear-gradient(rgba(55, 90, 130, 0.14) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(55, 90, 130, 0.14) 1px, transparent 1px);
+    linear-gradient(hsl(var(--nm-grid) / 0.5) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--nm-grid) / 0.5) 1px, transparent 1px);
   background-size: 40px 40px, 40px 40px;
 }
 
 .grid-bg-fine {
-  background-color: #05070a;
+  background-color: hsl(var(--nm-canvas-bg));
   background-image:
-    linear-gradient(rgba(55, 90, 130, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(55, 90, 130, 0.08) 1px, transparent 1px),
-    linear-gradient(rgba(55, 90, 130, 0.16) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(55, 90, 130, 0.16) 1px, transparent 1px);
+    linear-gradient(hsl(var(--nm-grid) / 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--nm-grid) / 0.28) 1px, transparent 1px),
+    linear-gradient(hsl(var(--nm-grid-major) / 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--nm-grid-major) / 0.35) 1px, transparent 1px);
   background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
 }
 
-/* Radial vignette on canvas */
 .canvas-vignette::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+  background: radial-gradient(ellipse at center, transparent 40%, hsl(var(--nm-app-bg) / 0.55) 100%);
 }
 
 .mono {
@@ -40,62 +39,59 @@
   letter-spacing: 0.02em;
 }
 
-/* Custom scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #0a1017; }
-::-webkit-scrollbar-thumb { background: #1e2a38; border-radius: 6px; }
-::-webkit-scrollbar-thumb:hover { background: #2a3a4d; }
+::-webkit-scrollbar-track { background: hsl(var(--nm-app-bg)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--nm-panel-border)); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--nm-grid-major)); }
 
-/* Status pulse animation */
+/* Animations */
 @keyframes pulse-status {
   0%, 100% { box-shadow: 0 0 0 0 currentColor; opacity: 1; }
   50% { box-shadow: 0 0 0 6px transparent; opacity: 0.55; }
 }
 .status-dot-pulse { animation: pulse-status 2.2s infinite; }
 
-/* Edge dash animation */
 @keyframes dash-flow {
   to { stroke-dashoffset: -24; }
 }
 .edge-flow { animation: dash-flow 1.4s linear infinite; }
 
-/* Node hover */
 .node-group { cursor: pointer; transition: transform 120ms ease; }
 .node-group:hover .node-halo { opacity: 0.75; }
 
-/* Marching ants for selected node */
 @keyframes ants {
   to { stroke-dashoffset: -16; }
 }
 .selected-ants { animation: ants 1s linear infinite; }
 
-/* Panel */
+/* Panels */
 .panel {
-  background: linear-gradient(180deg, rgba(15, 24, 35, 0.9), rgba(10, 16, 23, 0.9));
-  border: 1px solid rgba(90, 140, 190, 0.15);
+  background: hsl(var(--nm-panel-bg) / 0.92);
+  border: 1px solid hsl(var(--nm-panel-border));
   backdrop-filter: blur(10px);
 }
 
 /* Card hover */
 .map-card {
+  background: hsl(var(--nm-panel-bg));
+  border: 1px solid hsl(var(--nm-panel-border));
   transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 220ms, box-shadow 220ms;
 }
 .map-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(120, 200, 255, 0.4);
-  box-shadow: 0 12px 40px -12px rgba(0, 160, 255, 0.25);
+  border-color: hsl(var(--primary) / 0.55);
+  box-shadow: 0 12px 40px -12px hsl(var(--primary) / 0.28);
 }
 
-/* Subtle noise texture */
 .noise::before {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.03;
+  opacity: 0.025;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
 }
 
-/* Selection color */
-::selection { background: rgba(56, 189, 248, 0.35); color: #e4f2ff; }
+::selection { background: hsl(var(--primary) / 0.35); color: hsl(var(--nm-text-strong)); }

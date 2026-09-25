@@ -54,10 +54,21 @@
     stuck_count: 0
     priority: "high"
     needs_retesting: true
+
+  - task: "Admin auth + drawio upload + admin-guarded writes"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
     status_history:
         -working: "NA"
         -agent: "main"
         -comment: "Full CRUD for maps/nodes/edges + status endpoint with deterministic simulation. Seeds 3 maps from parsed drawio files on empty DB."
+        -working: true
+        -agent: "testing"
+        -comment: "All 13 auth & upload tests passed (100%). Verified: (1) POST /api/auth/login with valid credentials returns 200 with token and user, (2) POST /api/auth/login with invalid credentials returns 401, (3) GET /api/auth/me with Bearer token returns 200 with user info (username: admin, role: admin), (4) GET /api/auth/me without token returns 401, (5) GET /api/maps without token returns 200 (public endpoint, found 3 maps), (6) POST /api/maps without token returns 401, (7) PUT /api/maps/{id} without token returns 401, (8) DELETE /api/maps/{id} without token returns 401, (9) POST /api/maps/{id}/nodes without token returns 401, (10) POST /api/maps/upload without token returns 401, (11) POST /api/maps/upload WITH Bearer token returns 200 with parsed nodes (7) and edges (6) from graha.drawio file, (12) DELETE uploaded map with token returns 200, (13) GET /api/maps/{id}/status without token returns 200 (public endpoint). All authentication guards working correctly. JWT token generation and validation functional. Protected endpoints properly secured. Public endpoints remain accessible. File upload with authentication works and parses drawio files correctly."
 ##   current_focus:
 ##     - "Task name 1"
 ##     - "Task name 2"
@@ -138,3 +149,9 @@
       message: "Backend built for NetMap. 3 maps seeded from user-provided drawio files. Please test: GET /api/maps, GET /api/maps/{id}, POST/PUT/DELETE for maps and nodes/edges, and GET /api/maps/{id}/status."
     - agent: "testing"
       message: "Backend testing complete. All 14 tests passed (100%). All CRUD operations for maps, nodes, and edges are working correctly. Status simulation endpoint is functional. 3 seeded maps verified. No issues found."
+
+## agent_communication_2:
+    -agent: "main"
+    -message: "Added JWT auth (admin/admin123 via .env), admin-only write endpoints, .drawio upload endpoint at POST /api/maps/upload (multipart). Also made landing page = admin login; viewers get read-only via 'Continue as viewer'. Theme system with light/dark toggle. Please verify auth guards (401 without token, 200 with token) and upload."
+    -agent: "testing"
+    -message: "Backend auth & upload testing complete. All 13 tests passed (100%). Authentication system fully functional: login with correct/incorrect credentials works as expected, JWT token generation and validation working, all protected endpoints (POST/PUT/DELETE) correctly return 401 without token, public endpoints (GET /api/maps, GET /api/maps/{id}/status) remain accessible without auth, file upload endpoint works with Bearer token and successfully parses drawio files (tested with graha.drawio - parsed 7 nodes and 6 edges), cleanup (delete) works with authentication. No issues found. Backend is production-ready."
